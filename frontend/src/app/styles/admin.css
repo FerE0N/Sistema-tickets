@@ -1,0 +1,166 @@
+/* ============ Tabla Admin Tickets ============ */
+.table-admin {
+    overflow: hidden;
+}
+
+.table-admin table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.table-admin thead th {
+    text-align: left;
+    font-weight: 600;
+    color: #fff;
+    opacity: .9;
+    background: rgba(255, 255, 255, .08);
+    border-bottom: 1px solid var(--glass-brd);
+    padding: .65rem .7rem;
+    font-size: .88rem;
+}
+
+.table-admin tbody td {
+    padding: .65rem .7rem;
+    color: #fff;
+    border-top: 1px solid rgba(255, 255, 255, .08);
+    vertical-align: middle;
+}
+
+.table-admin tbody tr:hover {
+    background: rgba(255, 255, 255, .06);
+}
+
+.table-admin .cell-subject .subject {
+    font-weight: 600;
+}
+
+.table-admin .cell-subject .muted {
+    opacity: .8;
+    font-size: .86rem;
+}
+
+.table-admin .row-actions {
+    display: inline-flex;
+    gap: .4rem;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.table-admin .cell-actions {
+    text-align: right;
+}
+
+.btn-row {
+    border: 1px solid var(--glass-brd);
+    background: transparent;
+    color: #fff;
+    padding: .35rem .6rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: .86rem;
+}
+
+.btn-row:hover {
+    background: rgba(255, 255, 255, .12);
+}
+
+.btn-row.warn {
+    border-color: rgba(245, 158, 11, .6);
+    color: var(--warn);
+}
+
+.btn-row.warn:hover {
+    background: rgba(245, 158, 11, .14);
+}
+
+.btn-row.ghost {
+    opacity: .9;
+}
+
+.table-admin .empty {
+    text-align: center;
+    padding: 1rem;
+    opacity: .9;
+}
+
+
+/* === FILTROS ADMIN (tickets) === */
+
+.admin-filters {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    padding: 1rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.filt-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.filt-label {
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+    opacity: 0.85;
+}
+
+.filt-input,
+.filt-select,
+.filt-date {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.45rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: #fff;
+    outline: none;
+}
+
+.filt-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.filt-input:focus,
+.filt-select:focus,
+.filt-date:focus {
+    border-color: #7dd3fc;
+    /* celeste */
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.filt-actions {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+}
+
+.btn-mini {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-mini:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.btn-create {
+    background: linear-gradient(90deg, #22c55e, #16a34a);
+    border: none;
+}
+
+.btn-create:hover {
+    background: linear-gradient(90deg, #16a34a, #15803d);
+}

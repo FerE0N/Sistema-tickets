@@ -1,0 +1,26 @@
+@baseUrl = http://localhost:4000/api
+
+### 1) Login para pruebas de logout
+# @name loginLogoutTest
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "laura@correo.com",
+  "password": "laura123"
+}
+
+### 2) Ver /auth/me con el token (debe 200 y log en server)
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{loginLogoutTest.response.body.token}}
+
+### 3) Logout (revocar token) — revisa logs del server (jti, expiración, resultado)
+POST {{baseUrl}}/auth/logout
+Authorization: Bearer {{loginLogoutTest.response.body.token}}
+
+### 4) Probar nuevamente /users con el MISMO token (debe 401 por 'Token revocado')
+GET {{baseUrl}}/users
+Authorization: Bearer {{loginLogoutTest.response.body.token}}
+
+### 5) (Opcional) Verificar en BD (ejecutar en pgAdmin)
+# SELECT jti, user_id, revoked_at, expires_at FROM revokedtokens ORDER BY revoked_at DESC;

@@ -1,0 +1,135 @@
+@baseUrl = http://localhost:4000/api
+
+########################
+#        AUTH
+########################
+
+### Login ADMIN (Laura)
+# @name loginAdmin
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "laura@correo.com",
+  "password": "laura12"
+}
+
+### Login AUX (Carlos)  (ajusta la contraseña si no coincide)
+# @name loginAux
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "carlos@correo.com",
+  "password": "carlos123"
+}
+
+### /auth/me (ADMIN)
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{loginAdmin.response.body.token}}
+
+### /auth/me (AUX)
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{loginAux.response.body.token}}
+
+### Logout (revoca token ADMIN actual)
+POST {{baseUrl}}/auth/logout
+Authorization: Bearer {{loginAdmin.response.body.token}}
+
+### (opcional) Re-login ADMIN para seguir usando admin endpoints
+# @name loginAdmin2
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "laura@correo.com",
+  "password": "laura123"
+}
+
+########################
+#     AUTOCOMPLETE
+########################
+
+### Buscar usuarios (q=la) — requiere auth
+GET {{baseUrl}}/users/search?q=la&limit=10
+Authorization: Bearer {{loginAdmin2.response.body.token}}
+
+### Buscar categorías (q=so) -> "Soporte de software"
+GET {{baseUrl}}/categorias/search?q=so&limit=10
+Authorization: Bearer {{loginAdmin2.response.body.token}}
+
+
+########################
+#       USERS (admin)
+########################
+
+### Listado paginado de usuarios (admin)
+GET {{baseUrl}}/users/paged?page=1&pageSize=10&sort=u.created_at&dir=DESC
+Authorization: Bearer {{loginAdmin2.response.body.token}}
+
+########################
+#       TICKETS
+########################
+
+### Tickets paginados (admin) con joins de nombres
+GET {{baseUrl}}/tickets/paged?page=1&pageSize=10&sort=t.created_at&dir=DESC
+Authorization: Bearer {{loginAdmin2.response.body.token}}
+
+### Mis tickets (AUX Carlos) — filtra por responsible_id=3
+GET {{baseUrl}}/tickets/paged?responsible_id=3&page=1&pageSize=10&sort=t.created_at&dir=DESC
+Authorization: Bearer {{loginAux.response.body.token}}
+
+### Crear ticket (ADMIN) responsible_id=3 (Carlos) agent_id=2 (Laura)
+# @name createTicket
+POST {{baseUrl}}/tickets
+Authorization: Bearer {{loginAdmin2.response.body.token}}
+Content-Type: application/json
+
+{
+  "subject": "PC de Carlos sin video",
+  "category_id": 2,
+  "responsible_id": 3,
+  "agent_id": 2,
+  "status": "abierto",
+  "description": "Tras reinicio, no da imagen; se sospecha cable o GPU."
+}
+
+### Ver ticket creado
+GET {{baseUrl}}/tickets/{{createTicket.response.body.ticket_id}}
+Authorization: Bearer {{loginAdmin2.response.body.token}}
+
+### Cerrar ticket (admin o agente asignado)
+PUT {{baseUrl}}/tickets/{{createTicket.response.body.ticket_id}}
+Authorization: Bearer {{loginAdmin2.response.body.token}}
+Content-Type: application/json
+
+{
+  "status": "cerrado"
+}
+
+### Reasignar agente (solo admin)
+PUT {{baseUrl}}/tickets/{{createTicket.response.body.ticket_id}}
+Authorization: Bearer {{loginAdmin2.response.body.token}}
+Content-Type: application/json
+
+{
+  "agent_id": 1
+}
+
+########################
+#   ADMIN — TOKENS
+########################
+
+### Listar tokens revocados (paginado)
+GET {{baseUrl}}/admin/revoked-tokens?page=1&pageSize=10&orderBy=revoked_at&orderDir=DESC
+Authorization: Bearer {{loginAdmin2.response.body.token}}
+
+### Login (Laura admin)
+POST http://localhost:4000/api/auth/login
+Content-Type: application/json
+
+{ "email":"laura@correo.com", "password":"laura123" }
+
+### Tickets paginados (sin filtros)
+GET http://localhost:4000/api/tickets/paged?page=1&pageSize=10
+Authorization: Bearer {{loginAdmin2.response.body.token}}

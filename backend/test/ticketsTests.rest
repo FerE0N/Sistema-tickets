@@ -1,0 +1,40 @@
+@baseUrl = http://localhost:4000/api
+@tokenAdmin = TU_JWT_ADMIN
+@tokenAgente = TU_JWT_AGENTE
+@tokenOtroAux = TU_JWT_OTRO_AUX
+
+### 1. Agente cierra su propio ticket (debe funcionar)
+PUT {{baseUrl}}/tickets/1
+Authorization: Bearer {{tokenAgente}}
+Content-Type: application/json
+
+{
+  "status": "cerrado"
+}
+
+### 2. Otro auxiliar intenta cerrar ticket que no es suyo (debe dar 403)
+PUT {{baseUrl}}/tickets/1
+Authorization: Bearer {{tokenOtroAux}}
+Content-Type: application/json
+
+{
+  "status": "cerrado"
+}
+
+### 3. Cambiar agente de un ticket (solo admin debe poder)
+PUT {{baseUrl}}/tickets/1
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "agent_id": 5
+}
+
+### 4. Auxiliar intenta cambiar agente (debe dar 403)
+PUT {{baseUrl}}/tickets/1
+Authorization: Bearer {{tokenAgente}}
+Content-Type: application/json
+
+{
+  "agent_id": 5
+}

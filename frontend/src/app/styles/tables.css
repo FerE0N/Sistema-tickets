@@ -1,0 +1,277 @@
+/* --- Contenedor con scroll y vidrio --- */
+.table-wrap {
+    position: relative;
+    border-radius: calc(var(--radius) + 6px);
+    overflow: auto;
+    /* glass */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-brd);
+    box-shadow: var(--shadow-sm), var(--glass-shadow);
+}
+
+/* --- Tabla base (hereda tu .table) --- */
+.table.table--glass {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: transparent;
+    /* deja ver el vidrio del wrap */
+    color: #fff;
+    /* alto contraste sobre fondo vítreo */
+    border: 0;
+    /* borde lo tiene el wrap */
+}
+
+/* Cabecera */
+.table.table--glass thead th {
+    position: sticky;
+    /* header fijo con scroll */
+    top: 0;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.10);
+    color: #fff;
+    border-bottom: 1px solid var(--glass-brd);
+    padding: .70rem .75rem;
+    font-weight: 700;
+    letter-spacing: .2px;
+}
+
+/* Celdas */
+.table.table--glass tbody td {
+    padding: .70rem .75rem;
+    border-top: 1px solid rgba(255, 255, 255, .12);
+    vertical-align: middle;
+}
+
+/* Filas: hover/clickable */
+.table.table--glass tbody tr:hover {
+    background: rgba(255, 255, 255, .06);
+}
+
+.table-row--clickable {
+    cursor: pointer;
+}
+
+.table-row--selected {
+    background: rgba(59, 130, 246, .12);
+    box-shadow: inset 0 0 0 1px rgba(59, 130, 246, .25);
+}
+
+/* Columna “Asunto” con elipsis */
+.td--subject {
+    max-width: 420px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Col alineadas */
+.td--num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.td--dim {
+    color: rgba(255, 255, 255, .85);
+    font-size: .92rem;
+}
+
+/* Badges/estados (sobre vidrio) */
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .2rem .5rem;
+    font-size: .78rem;
+    border-radius: 999px;
+    border: 1px solid var(--glass-brd);
+    background: rgba(255, 255, 255, .12);
+    color: #fff;
+}
+
+.chip--ok {
+    border-color: rgba(16, 185, 129, .35);
+    background: rgba(16, 185, 129, .15);
+}
+
+.chip--warn {
+    border-color: rgba(245, 158, 11, .35);
+    background: rgba(245, 158, 11, .15);
+}
+
+.chip--muted {
+    opacity: .85;
+}
+
+/* Botones de acciones dentro de la tabla */
+.table-actions {
+    display: inline-flex;
+    gap: .45rem;
+    align-items: center;
+}
+
+.btn-ghost-xs {
+    font-size: .86rem;
+    padding: .35rem .55rem;
+    border-radius: 10px;
+    border: 1px solid var(--glass-brd);
+    color: #fff;
+    background: transparent;
+}
+
+.btn-ghost-xs:hover {
+    background: rgba(255, 255, 255, .12);
+}
+
+/* Zebra opcional */
+.table--zebra tbody tr:nth-child(odd) {
+    background: rgba(255, 255, 255, .03);
+}
+
+/* Modo compacto opcional */
+.table--compact thead th {
+    padding: .55rem .6rem;
+}
+
+.table--compact tbody td {
+    padding: .55rem .6rem;
+}
+
+/* Responsive “cards” en móviles */
+@media (max-width: 640px) {
+    .table.table--glass thead {
+        display: none;
+    }
+
+    .table.table--glass,
+    .table.table--glass tbody,
+    .table.table--glass tr,
+    .table.table--glass td {
+        display: block;
+        width: 100%;
+    }
+
+    .table.table--glass tr {
+        border: 1px solid var(--glass-brd);
+        border-radius: 12px;
+        padding: .6rem .6rem;
+        margin-bottom: .8rem;
+        background: rgba(255, 255, 255, .05);
+    }
+
+    .table.table--glass td {
+        border: 0;
+        padding: .35rem 0;
+    }
+
+    .table.table--glass td[data-th]::before {
+        content: attr(data-th) " ";
+        display: inline-block;
+        min-width: 9ch;
+        color: rgba(255, 255, 255, .75);
+        font-weight: 600;
+    }
+}
+
+
+
+/* =========================
+   Paginación (glassmorphism)
+   ========================= */
+.pager {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem .8rem;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: .75rem;
+    padding: .55rem .75rem;
+
+    /* vidrio */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-brd);
+    border-radius: calc(var(--radius) + 6px);
+    box-shadow: var(--shadow-sm), var(--glass-shadow);
+    color: #fff;
+}
+
+.pager-left,
+.pager-right {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+/* Botones */
+.pager-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .42rem .7rem;
+    border-radius: 12px;
+    border: 1px solid var(--glass-brd);
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    transition: background .12s ease, transform .06s ease;
+}
+
+.pager-btn:hover {
+    background: rgba(255, 255, 255, .12);
+}
+
+.pager-btn:active {
+    transform: translateY(1px);
+}
+
+.pager-btn[disabled],
+.pager-btn:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+/* Info */
+.pager-info {
+    font-size: .92rem;
+    opacity: .9;
+}
+
+/* Selector de tamaño */
+.pager-size {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+}
+
+.pager-select {
+    min-width: 6.5ch;
+    padding: .35rem .55rem;
+    border-radius: 10px;
+    border: 1px solid var(--glass-brd);
+    background: rgba(255, 255, 255, .16);
+    color: #fff;
+    outline: none;
+}
+
+.pager-select:focus {
+    border-color: rgba(255, 255, 255, .55);
+    box-shadow: 0 0 0 6px rgba(255, 255, 255, .12);
+}
+
+/* Compacto en pantallas pequeñas */
+@media (max-width: 560px) {
+    .pager {
+        gap: .5rem;
+    }
+
+    .pager-left,
+    .pager-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
