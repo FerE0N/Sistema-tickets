@@ -1,0 +1,38 @@
+@baseUrl = http://localhost:4000/api
+### Login ADMIN (Laura)
+# @name loginAdmin
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "laura@correo.com",
+  "password": "laura123"
+}
+
+### Logout (revoca token ADMIN actual)
+POST {{baseUrl}}/auth/logout
+Authorization: Bearer {{loginAdmin.response.body.token}}
+
+### DASHBOARD (scope mine)
+GET http://localhost:4000/api/dashboard/summary?scope=mine
+Authorization: Bearer {{loginAdmin.response.body.token}}
+
+###
+GET http://localhost:4000/api/dashboard/by-status?scope=mine
+Authorization: Bearer {{loginAdmin.response.body.token}}
+
+###
+GET http://localhost:4000/api/dashboard/by-category?scope=mine
+Authorization: Bearer {{loginAdmin.response.body.token}}
+
+###
+GET http://localhost:4000/api/dashboard/by-day?scope=mine&days=30
+Authorization: Bearer {{loginAdmin.response.body.token}}
+
+### GLOBAL (requiere admin)
+GET http://localhost:4000/api/dashboard/summary?scope=all
+Authorization: Bearer {{loginAdmin.response.body.token}}
+
+###
+GET http://localhost:4000/api/dashboard/by-agent?scope=all
+Authorization: Bearer {{loginAdmin.response.body.token}}

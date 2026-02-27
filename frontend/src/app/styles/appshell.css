@@ -1,0 +1,187 @@
+/* ===== AppShell (glass navbar) ===== */
+.nav-glass {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.10);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.26);
+    box-shadow: 0 8px 32px rgba(2, 6, 23, 0.16);
+}
+
+.nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.brand .logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, .14);
+    border: 1px solid rgba(255, 255, 255, .22);
+    box-shadow: var(--shadow-sm);
+    font-weight: 700;
+    letter-spacing: .3px;
+    color: #fff;
+}
+
+.brand .title {
+    font-weight: 600;
+    letter-spacing: .2px;
+}
+
+.nav-links {
+    display: none;
+    gap: 10px;
+    align-items: center;
+    margin-left: 12px;
+}
+
+@media (min-width: 860px) {
+    .nav-links {
+        display: flex;
+    }
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, .90);
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    transition: background .15s ease, border-color .15s ease, transform .08s ease;
+}
+
+.nav-link:hover {
+    background: rgba(255, 255, 255, .10);
+    border-color: rgba(255, 255, 255, .14);
+}
+
+.nav-link:active {
+    transform: translateY(1px);
+}
+
+.nav-link.active {
+    background: rgba(255, 255, 255, .16);
+    border-color: rgba(255, 255, 255, .26);
+}
+
+.nav-spacer {
+    flex: 1;
+}
+
+.user-chip {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+}
+
+@media (min-width: 860px) {
+    .user-chip {
+        display: inline-flex;
+    }
+}
+
+.btn-logout {
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, .26);
+    background: transparent;
+    cursor: pointer;
+}
+
+.btn-logout:hover {
+    background: rgba(255, 255, 255, .12);
+}
+
+.btn-logout:active {
+    transform: translateY(1px);
+}
+
+/* Hamburger (mobile) */
+.hamburger {
+    margin-left: auto;
+    display: inline-flex;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, .26);
+    background: rgba(255, 255, 255, .10);
+    color: #fff;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+@media (min-width: 860px) {
+    .hamburger {
+        display: none;
+    }
+}
+
+/* Mobile drawer */
+.mobile-drawer {
+    display: none;
+    position: sticky;
+    top: 56px;
+    /* debajo del header */
+    z-index: 30;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, .22);
+}
+
+.mobile-drawer.open {
+    display: block;
+}
+
+.mobile-menu {
+    display: grid;
+    gap: 8px;
+    padding: 10px 16px 14px;
+}
+
+.mobile-link {
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, .22);
+    background: rgba(255, 255, 255, .08);
+}
+
+.mobile-link.active {
+    background: rgba(255, 255, 255, .16);
+}
+
+/* Contenedor de página bajo el AppShell cuando NO se usa layout especial */
+.shell-body {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+@media (min-width: 768px) {
+    .shell-body {
+        padding: 24px;
+    }
+}

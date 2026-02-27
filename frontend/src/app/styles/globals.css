@@ -1,0 +1,742 @@
+/* src/app/globals.css */
+:root {
+    /* Paleta base (inspirada en el logo): */
+    --brand: #4A8F94;
+    /* primario teal */
+    --brand-600: #3e7b7f;
+    --brand-700: #34666a;
+    --accent: #3C8D40;
+    /* verde acento p/positivos */
+    --warn: #F59E0B;
+    /* ámbar p/“en progreso” */
+    --danger: #EF4444;
+    /* rojo para errores */
+    --ok: #10B981;
+    /* éxito */
+
+    /* Neutros / superficies */
+    --bg-app: #F6F8FB;
+    /* fondo general */
+    --surface: #FFFFFF;
+    /* tarjetas/paneles */
+    --ink: #0F172A;
+    /* texto principal (slate-900) */
+    --muted: #bed6f8;
+    /* texto secundario (slate-500) */
+    --border: #E5E7EB;
+    /* bordes suaves */
+
+    /* Sombras y radios */
+    --radius: 12px;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, .06);
+    --shadow-md: 0 6px 16px rgba(2, 6, 23, .06);
+}
+
+/* Reset mínimo y tipografía */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans",
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    background: var(--bg-app);
+    color: var(--ink);
+    line-height: 1.45;
+}
+
+
+/* Utilidades “tailwind-like” para tokens de color que usamos en JSX */
+.text-ink {
+    color: var(--ink);
+}
+
+.text-muted {
+    color: var(--muted);
+}
+
+.bg-app {
+    background: var(--bg-app);
+}
+
+.bg-surface {
+    background: var(--surface);
+}
+
+.border-soft {
+    border: 1px solid var(--border);
+}
+
+/* Componentes básicos (cards / botones / inputs) */
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+}
+
+.card-elevated {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    border: 1px solid #0000;
+    /* evita salto con hover */
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .5rem .9rem;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--ink);
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform .08s ease, box-shadow .12s ease, background .12s ease;
+}
+
+.btn:hover {
+    box-shadow: var(--shadow-sm);
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+.btn-brand {
+    background: var(--brand);
+    color: #fff;
+    border-color: var(--brand-600);
+}
+
+.btn-brand:hover {
+    background: var(--brand-600);
+}
+
+.btn-ghost {
+    background: transparent;
+    border-color: var(--border);
+    color: var(--ink);
+}
+
+.input,
+.select,
+.textarea {
+    width: 100%;
+    padding: .55rem .75rem;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--ink);
+    outline: none;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgba(74, 143, 148, .15);
+}
+
+/* Tablas */
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.table thead th {
+    text-align: left;
+    font-weight: 600;
+    color: var(--muted);
+    background: #fafafa;
+    border-bottom: 1px solid var(--border);
+    padding: .75rem .75rem;
+    font-size: .9rem;
+}
+
+.table tbody td {
+    padding: .7rem .75rem;
+    border-top: 1px solid var(--border);
+    vertical-align: middle;
+}
+
+/* Chips para estados */
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .2rem .5rem;
+    font-size: .78rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: #fff;
+}
+
+.chip.ok {
+    border-color: rgba(16, 185, 129, .25);
+    color: var(--ok);
+    background: rgba(16, 185, 129, .08);
+}
+
+.chip.warn {
+    border-color: rgba(245, 158, 11, .25);
+    color: var(--warn);
+    background: rgba(245, 158, 11, .08);
+}
+
+.chip.muted {
+    color: var(--muted);
+}
+
+/* Enlaces */
+a {
+    color: var(--brand);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Fondo degradado animado */
+@keyframes gradient-x {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+.bg-animated-gradient {
+    background: linear-gradient(135deg, #0ea5b1, #2563eb, #8b5cf6, #22c55e);
+    background-size: 300% 300%;
+    animation: gradient-x 16s ease infinite;
+}
+
+/* Fondo animado base */
+.animated-bg {
+    position: relative;
+    min-height: 100dvh;
+    background: linear-gradient(135deg, #0ea5b1, #2563eb, #8b5cf6, #22c55e);
+    background-size: 300% 300%;
+    animation: gradient-x 16s ease infinite;
+}
+
+/* Overlay con patrón - SOLO login */
+.pattern-overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(rgba(255, 255, 255, .18) 1px, transparent 1px);
+    background-size: 18px 18px;
+    opacity: .24;
+}
+
+
+/* Glassmorphism: tarjeta translúcida */
+.glass {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+/* Pequeño “glow” al foco */
+.input-focus-glow:focus {
+    box-shadow: 0 0 0 6px rgba(99, 102, 241, .15);
+}
+
+/* ===== Utilidades para layout sin Tailwind ===== */
+
+.container {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.min-h-screen {
+    min-height: 100vh;
+}
+
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.inset-0 {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.overflow-hidden {
+    overflow: hidden;
+}
+
+.text-white {
+    color: #fff;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Grid responsivo 2 columnas (columna única en móviles) */
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+}
+
+@media (min-width: 768px) {
+    .grid-2 {
+        grid-template-columns: 1.05fr 0.95fr;
+    }
+}
+
+/* Espaciados verticales */
+.stack>*+* {
+    margin-top: 16px;
+}
+
+.stack-lg>*+* {
+    margin-top: 24px;
+}
+
+.stack-xl>*+* {
+    margin-top: 32px;
+}
+
+/* Tarjeta translúcida + redondeado consistente con variables */
+.panel {
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+/* Variante translúcida sobre fondo animado */
+.panel-glass {
+    border-radius: 18px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #fff;
+}
+
+/* Badge del logo */
+.logo-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: var(--shadow-sm);
+    font-weight: 700;
+    letter-spacing: .3px;
+}
+
+.login-badge {
+    display: grid;
+    place-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, .14);
+    border: 1px solid rgba(255, 255, 255, .22);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Títulos hero */
+.hero-title {
+    font-size: 28px;
+    font-weight: 650;
+    letter-spacing: .2px;
+}
+
+@media (min-width: 768px) {
+    .hero-title {
+        font-size: 32px;
+    }
+}
+
+/* Input más alto para formularios de login */
+.input-lg {
+    padding: .8rem .95rem;
+    border-radius: 12px;
+}
+
+/* Botón principal grande */
+.btn-lg {
+    width: 100%;
+    padding: .9rem 1rem;
+    font-weight: 600;
+    border-radius: 12px;
+}
+
+/* Botón blanco sobre fondo oscuro */
+.btn-white {
+    background: #fff;
+    color: #0f172a;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-white:hover {
+    filter: brightness(.98);
+}
+
+.btn-white:active {
+    transform: translateY(1px);
+}
+
+/* Bloque de error */
+.alert {
+    border: 1px solid rgba(239, 68, 68, .35);
+    background: rgba(239, 68, 68, .12);
+    color: #ffe8e8;
+    border-radius: 12px;
+    padding: .6rem .75rem;
+    font-size: .92rem;
+}
+
+/* Spinner simple */
+.spinner {
+    width: 16px;
+    height: 16px;
+    border-radius: 999px;
+    border: 2px solid rgba(15, 23, 42, .25);
+    border-top-color: rgba(15, 23, 42, 1);
+    animation: spin .75s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Link tenue */
+.link-ghost {
+    color: rgba(255, 255, 255, .75);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.link-ghost:hover {
+    color: #fff;
+}
+
+/* Patrón sutil sobre el degradado */
+.bg-dots {
+    opacity: .28;
+    background-image: radial-gradient(rgba(255, 255, 255, .18) 1px, transparent 1px);
+    background-size: 18px 18px;
+}
+
+/* Contenedor general de la app */
+.app-shell {
+    max-width: 1200px;
+    /* similar a “max-w-7xl” */
+    margin: 0 auto;
+    padding: 16px;
+}
+
+@media (min-width: 768px) {
+    .app-shell {
+        padding: 24px;
+    }
+}
+
+/* Pila vertical con separación homogénea */
+.page-stack>*+* {
+    margin-top: 1.5rem;
+    /* 24px */
+}
+
+/* contenedor centrado por defecto */
+/* contenedor centrado por defecto */
+.app-shell {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+@media (min-width: 768px) {
+    .app-shell {
+        padding: 24px;
+    }
+}
+
+/* full-bleed para páginas como el dashboard */
+.app-shell--full {
+    width: 100vw;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+/* ==== Role pills (roles como botones modernos) ==== */
+.pills {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.pill {
+    padding: 0.5rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.pill:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.pill.active {
+    background: var(--brand);
+    border-color: var(--brand-600);
+    box-shadow: 0 4px 12px rgba(74, 143, 148, 0.35);
+    color: #fff;
+}
+
+/* ==== Departamento select estilizado ==== */
+.select-shell {
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    padding: 0.3rem 0.6rem;
+}
+
+.select-shell .select {
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem;
+    font-size: 0.95rem;
+    width: 100%;
+    color: var(--ink);
+}
+
+/* ========= Combo (selector con búsqueda) ========= */
+.combo-trigger {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border: 1px solid var(--glass-brd);
+    background: rgba(255, 255, 255, 0.16);
+    color: #fff;
+    border-radius: 12px;
+    padding: .65rem .9rem;
+    outline: none;
+    cursor: pointer;
+    transition: box-shadow .12s ease, border-color .12s ease, background .12s ease;
+}
+
+.combo-trigger:hover {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.combo-trigger.open {
+    border-color: rgba(255, 255, 255, .55);
+    box-shadow: 0 0 0 6px rgba(255, 255, 255, .12);
+}
+
+.combo-wrap {
+    position: relative;
+    /* asegura que el ancho del panel sea el del trigger */
+}
+
+.combo-value {
+    font-size: .95rem;
+}
+
+.combo-value.placeholder {
+    opacity: .8;
+}
+
+.combo-chevron {
+    opacity: .8;
+}
+
+.combo-panel {
+    position: absolute;
+    top: calc(100% + .5rem);
+    left: 0;
+    right: 0;
+    /* ocupa el ancho del wrapper */
+    width: auto;
+    /* evita fijarlo en px */
+    z-index: 50;
+
+    /* seguridad en móviles */
+    max-width: 92vw;
+    max-height: 70vh;
+    overflow: auto;
+
+    /* Hereda glass-panel base; reforzamos fondo para legibilidad de lista */
+    background: rgba(255, 255, 255, .92);
+    color: var(--ink);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+}
+
+.combo-search {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .6rem .7rem .4rem .7rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+}
+
+.combo-search .input {
+    background: #fff;
+    border: 1px solid var(--border);
+    color: var(--ink);
+    border-radius: 10px;
+    padding: .5rem .7rem;
+}
+
+.combo-list {
+    max-height: 240px;
+    overflow: auto;
+    padding: .35rem;
+}
+
+.combo-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: .55rem .6rem;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    background: transparent;
+    cursor: pointer;
+    font-size: .95rem;
+    color: var(--ink);
+}
+
+.combo-item:hover {
+    background: #f6f8fb;
+    border-color: var(--border);
+}
+
+.combo-item.active {
+    background: rgba(74, 143, 148, .12);
+    border-color: rgba(74, 143, 148, .35);
+    color: var(--ink);
+}
+
+.combo-empty {
+    padding: .7rem .75rem;
+    font-size: .9rem;
+    color: var(--muted);
+}
+
+.combo-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: .5rem .6rem .6rem;
+    border-top: 1px solid var(--border);
+}
+
+/* ============ SlideOver ============ */
+.slideover-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 6, 23, .35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .18s ease;
+    z-index: 39;
+}
+
+.slideover-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.slideover-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    transform: translateX(100%);
+    transition: transform .22s ease;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid var(--glass-brd);
+}
+
+.slideover-panel.open {
+    transform: translateX(0);
+}
+
+.slideover-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .9rem 1rem;
+    border-bottom: 1px solid var(--glass-brd);
+    color: #fff;
+}
+
+.slideover-title {
+    font-weight: 700;
+    letter-spacing: .2px;
+}
+
+.slideover-close {
+    border: 1px solid var(--glass-brd);
+    background: transparent;
+    color: #fff;
+    padding: .25rem .5rem;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.slideover-close:hover {
+    background: rgba(255, 255, 255, .12);
+}
+
+.slideover-body {
+    padding: 1rem;
+    overflow: auto;
+    flex: 1 1 auto;
+}

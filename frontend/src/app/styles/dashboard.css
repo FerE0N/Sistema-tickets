@@ -1,0 +1,204 @@
+/* Fondo animado y patrón */
+.dash-shell {
+    position: relative;
+    min-height: 100dvh;
+    padding: 0.5rem;
+    background-size: 300% 300%;
+    animation: gradient-x 16s ease infinite;
+}
+
+.dash-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(rgba(255, 255, 255, .18) 1px, transparent 1px);
+    background-size: 18px 18px;
+    opacity: .24;
+}
+
+.dashboard {
+    display: grid;
+    gap: 1.25rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Tokens glass */
+:root {
+    --glass-bg: rgba(255, 255, 255, 0.10);
+    --glass-bg-strong: rgba(255, 255, 255, 0.14);
+    --glass-brd: rgba(255, 255, 255, 0.26);
+    --glass-shadow: 0 8px 32px rgba(2, 6, 23, 0.16);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --glass-bg: rgba(255, 255, 255, 0.08);
+        --glass-bg-strong: rgba(255, 255, 255, 0.12);
+        --glass-brd: rgba(255, 255, 255, 0.22);
+    }
+}
+
+/* Utilidad global glass */
+.glass-panel {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-brd);
+    border-radius: calc(var(--radius) + 6px);
+    box-shadow: var(--shadow-sm), var(--glass-shadow);
+}
+
+.glass-panel:hover {
+    background: var(--glass-bg-strong);
+}
+
+/* Para tablas sobre vidrio */
+.table.glass-panel {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-brd);
+    color: #fff;
+}
+
+.table.glass-panel thead th {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.table.glass-panel tbody td {
+    color: #fff;
+}
+
+/* Chips/badges sobre vidrio */
+.chip.glass-panel {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--glass-brd);
+    color: #fff;
+}
+
+/* Header */
+.dash-header {
+    border-radius: calc(var(--radius) + 6px);
+    padding: 1rem 1.25rem;
+}
+
+.dash-header .range {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .85rem 1rem;
+    align-items: end;
+}
+
+.dash-header .range .field {
+    display: grid;
+    gap: .35rem;
+}
+
+.dash-header label {
+    font-size: .8rem;
+    color: #fff;
+    opacity: .9;
+}
+
+/* Inputs */
+.dash-input {
+    min-width: 14ch;
+    border: 1px solid var(--glass-brd);
+    background: rgba(255, 255, 255, 0.16);
+    color: #fff;
+    border-radius: 12px;
+    padding: .55rem .8rem;
+    outline: none;
+}
+
+.dash-input::placeholder {
+    color: rgba(255, 255, 255, .7);
+}
+
+.dash-input:focus {
+    border-color: rgba(255, 255, 255, .55);
+    box-shadow: 0 0 0 6px rgba(255, 255, 255, .12);
+}
+
+/* KPIs */
+.kpis {
+    display: grid;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .kpis {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+.kpi {
+    padding: 1rem 1.1rem;
+    border-radius: calc(var(--radius) + 6px);
+}
+
+.kpi .label {
+    font-size: .82rem;
+    color: #fff;
+    opacity: .85;
+    margin-bottom: .25rem;
+}
+
+.kpi .value {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, .08);
+}
+
+/* Panels */
+.panels {
+    display: grid;
+    gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+    .panels {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Título centrado, sin borde, look más “hero” solo en paneles del dashboard */
+.panel-card [data-card-title] {
+    border: none !important;
+    background: transparent !important;
+    text-align: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: .2px;
+    padding: .5rem .75rem .25rem;
+    margin: 0;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, .08);
+}
+
+/* Opcional: suaviza o elimina el borde del panel (si lo notas blanco) */
+.panel-card {
+    /* Si lo quieres sin borde, comenta la línea de border en tu regla .panel-card
+     o déjala muy sutil como aquí: */
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+
+
+
+/* Botón ghost */
+.btn-ghost-sm {
+    font-size: .9rem;
+    padding: .45rem .7rem;
+    border-radius: 12px;
+    border: 1px solid var(--glass-brd);
+    color: #fff;
+    background: transparent;
+    cursor: pointer;
+}
+
+.btn-ghost-sm:hover {
+    background: rgba(255, 255, 255, .12);
+}

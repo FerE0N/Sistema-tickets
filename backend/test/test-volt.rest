@@ -1,0 +1,19 @@
+@baseUrl = http://localhost:4000/api
+
+### Login como ADMIN (Laura) para probar admin endpoints
+# @name adminLoginForAdminEndpoints
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "laura@correo.com",
+  "password": "laura123"
+}
+
+### (Opcional) Revocar su token actual para generar un registro
+POST {{baseUrl}}/auth/logout
+Authorization: Bearer {{adminLoginForAdminEndpoints.response.body.token}}
+
+### Listar tokens revocados (paginado)
+GET {{baseUrl}}/admin/revoked-tokens?page=1&pageSize=10&orderBy=revoked_at&orderDir=DESC
+Authorization: Bearer {{adminLoginForAdminEndpoints.response.body.token}}

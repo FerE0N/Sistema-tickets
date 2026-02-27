@@ -1,0 +1,30 @@
+@baseUrl = http://localhost:4000/api
+@tokenAdmin = PEGAR_JWT_ADMIN_AQUI
+
+### Listar categorías (público)
+GET {{baseUrl}}/categorias
+
+### Obtener categoría por ID (público)
+GET {{baseUrl}}/categorias/1
+
+### Crear categoría (admin)
+POST {{baseUrl}}/categorias
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "name": "Soporte de software"
+}
+
+### Actualizar categoría (admin)
+PUT {{baseUrl}}/categorias/1
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "name": "Hardware"
+}
+
+### Eliminar categoría (admin)
+DELETE {{baseUrl}}/categorias/1
+Authorization: Bearer {{tokenAdmin}}

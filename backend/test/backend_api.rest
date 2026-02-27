@@ -1,0 +1,174 @@
+@baseUrl = http://localhost:4000/api
+@token = REEMPLAZA_CON_TU_JWT_SI_LO_USAS
+
+############################################################
+# 🔐 AUTH
+############################################################
+
+### Login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "juan@correo.com",
+  "password": "juan123"
+}
+
+### Registro de usuario
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Nuevo",
+  "last_name": "Usuario",
+  "email": "nuevo.usuario@example.com",
+  "password": "clave123",
+  "role_id": 2,
+  "department_id": 1
+}
+
+############################################################
+# 🗂️ DEPARTAMENTOS
+############################################################
+
+### Listar departamentos
+GET {{baseUrl}}/departamentos
+Content-Type: application/json
+
+### Crear departamento
+POST {{baseUrl}}/departamentos
+Content-Type: application/json
+
+{
+  "name": "Soporte Técnico"
+}
+
+### Obtener departamento por ID
+GET {{baseUrl}}/departamentos/1
+Content-Type: application/json
+
+### Actualizar departamento
+PUT {{baseUrl}}/departamentos/1
+Content-Type: application/json
+
+{
+  "name": "Soporte y Atención"
+}
+
+### Eliminar departamento
+DELETE {{baseUrl}}/departamentos/1
+Content-Type: application/json
+
+
+############################################################
+# 📂 CATEGORÍAS
+# (Asegúrate de tener montada la ruta /api/categorias en tu backend)
+############################################################
+
+### Listar categorías
+GET {{baseUrl}}/categories
+Content-Type: application/json
+
+### Crear categoría
+POST {{baseUrl}}/categories
+Content-Type: application/json
+
+{
+  "name": "Errores del sistema"
+}
+
+### Obtener categoría por ID
+GET {{baseUrl}}/categories/1
+Content-Type: application/json
+
+### Actualizar categoría
+PUT {{baseUrl}}/categories/1
+Content-Type: application/json
+
+{
+  "name": "Soporte de software"
+}
+
+### Eliminar categoría
+DELETE {{baseUrl}}/categories/1
+Content-Type: application/json
+
+
+############################################################
+# 🎫 TICKETS
+############################################################
+
+### Listar tickets
+GET {{baseUrl}}/tickets
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Obtener ticket por ID
+GET {{baseUrl}}/tickets/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Crear ticket
+POST {{baseUrl}}/tickets
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "subject": "No se puede acceder al panel",
+  "category_id": 1,
+  "responsible_id": 2,
+  "agent_id": 3,
+  "status": "abierto",
+  "description": "El usuario no puede acceder con sus credenciales."
+}
+
+### Actualizar ticket
+PUT {{baseUrl}}/tickets/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "subject": "Panel de usuario corregido",
+  "category_id": 1,
+  "responsible_id": 2,
+  "agent_id": 3,
+  "status": "cerrado",
+  "description": "Se solucionó el acceso con la nueva versión."
+}
+
+### Eliminar ticket
+DELETE {{baseUrl}}/tickets/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+@baseUrl = http://localhost:4000/api
+@token = PEGAR_JWT_AQUI
+
+### (Self) Cambiar MI contraseña (requiere current_password)
+PATCH {{baseUrl}}/users/3/password
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "current_password": "aux123",
+  "new_password": "NuevaClaveSegura1",
+  "confirm_password": "NuevaClaveSegura1"
+}
+
+### (Admin) Forzar cambio de contraseña de otro usuario (sin current)
+PATCH {{baseUrl}}/users/2/password
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "new_password": "ClaveAdminReseteada1",
+  "confirm_password": "ClaveAdminReseteada1"
+}
+
+
+
+
+
+
+
