@@ -1,29 +1,53 @@
-// src/server/sse.js (o dentro de index.js)
-const { Pool } = require('pg');
-const pool = require('./models/db'); // tu pool existente
-let pgClient;
+// server/sse.js: avisos en tiempo real con Server-Sent Events.
+// Un trigger de PostgreSQL emite NOTIFY ticket_changes en cada INSERT/UPDATE/DELETE
+// de tickets; aquí se escucha ese canal y se reenvía a todos los navegadores conectados.
+const express = require('express');
+const { Client } = require('pg');
+const { dbConfig } = require('../models/db');
 
-// SSE endpoint
-app.get('/api/events', async (req, res) => {
-    res.setHeader('Content-Type', 'text/event-stream');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.setHeader('Connection', 'keep-alive');
-
-    res.write(`event: ping\ndata: ok\n\n`); // warm up
-
-    // Únete al canal de Postgres una sola vez
-    if (!pgClient) {
-        pgClient = await pool.connect();
-        await pgClient.query('LISTEN ticket_changes');
-        pgClient.on('notification', (msg) => {
-            // Reenvía a todos los clientes conectados
-            const data = `event: ticket\ndata: ${msg.payload}\n\n`;
-            clients.forEach(c => c.write(data));
-        });
-    }
-
-    // registra cliente
-    clients.add(res);
-    req.on('close', () => { clients.delete(res); });
-});
 const clients = new Set();
+const router = express.Router();
+
+router.get('/', (req, res) => {
+    res.set({
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        Connection: 'keep-alive',
+        'X-Accel-Buffering': 'no',
+    });
+    res.flushHeaders();
+    res.write('retry: 5000\n\n');
+
+    clients.add(res);
+    // Comentario periódico para que proxies no cierren la conexión
+    const keepAlive = setInterval(() => res.write(': ping\n\n'), 25000);
+
+    req.on('close', () => {
+        clearInterval(keepAlive);
+        clients.delete(res);
+    });
+});
+
+function broadcast(event, payload) {
+    const data = `event: ${event}\ndata: ${payload}\n\n`;
+    for (const res of clients) res.write(data);
+}
+
+let listener;
+async function startTicketListener() {
+    if (listener) return listener;
+    listener = new Client(dbConfig);
+    listener.on('notification', (msg) => {
+        if (msg.channel === 'ticket_changes') broadcast('tickets:update', msg.payload || '{}');
+    });
+    listener.on('error', (err) => {
+        console.error('[SSE] Conexión LISTEN perdida, reintentando en 5 s:', err.message);
+        listener = null;
+        setTimeout(() => startTicketListener().catch(() => {}), 5000);
+    });
+    await listener.connect();
+    await listener.query('LISTEN ticket_changes');
+    return listener;
+}
+
+module.exports = { router, broadcast, startTicketListener, clients };

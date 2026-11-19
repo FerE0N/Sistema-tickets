@@ -1,26 +1,27 @@
 // services/authService.js
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const { randomUUID } = require('crypto');
 const crypto = require('crypto');
-const db = require('../models/db'); // tu pool/cliente PG
+const db = require('../models/db');
 const nodemailer = require('nodemailer');
 
 const RESET_TTL_MINUTES = 60; // 1 hora
+const MIN_PASSWORD_LENGTH = 8;
 
 // ---------- Email (usa SMTP si lo configuras) ----------
 async function sendResetEmail(to, resetUrl) {
     // Si no configuras SMTP, lo registramos en consola
     const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_FROM } = process.env;
     if (!SMTP_HOST) {
-        console.log(`[DEV] Enlace de reseteo para ${to}: ${resetUrl}`);
+        // Sin SMTP (desarrollo): el enlace solo se muestra en la consola del servidor
+        console.log(`[DEV] Enlace de recuperación para ${to}: ${resetUrl}`);
         return;
     }
 
     const transporter = nodemailer.createTransport({
         host: SMTP_HOST,
         port: Number(SMTP_PORT || 587),
-        secure: false,
+        secure: process.env.SMTP_SECURE === 'true',
         auth: SMTP_USER ? { user: SMTP_USER, pass: SMTP_PASS } : undefined,
     });
 
@@ -35,13 +36,6 @@ async function sendResetEmail(to, resetUrl) {
       <p>Si no fuiste tú, ignora este correo.</p>
     `,
     });
-}
-
-// ---------- Generar token (guardamos hash en DB) ----------
-function generateTokenPair() {
-    const raw = crypto.randomBytes(32).toString('hex');             // token que viaja por URL
-    const hash = crypto.createHash('sha256').update(raw).digest('hex'); // lo que guardamos
-    return { raw, hash };
 }
 
 // ---------- Public API ----------
@@ -95,6 +89,11 @@ async function completePasswordReset(rawToken, newPassword) {
         const err = new Error('Token inválido o expirado'); err.code = 'INVALID_TOKEN'; throw err;
     }
 
+    if (String(newPassword || '').length < MIN_PASSWORD_LENGTH) {
+        const err = new Error(`La contraseña debe tener al menos ${MIN_PASSWORD_LENGTH} caracteres`);
+        err.code = 'WEAK_PASSWORD'; throw err;
+    }
+
     const user = rows[0];
     if (!user.reset_expires || new Date(user.reset_expires) < new Date()) {
         const err = new Error('Token inválido o expirado'); err.code = 'INVALID_TOKEN'; throw err;
@@ -112,8 +111,17 @@ async function completePasswordReset(rawToken, newPassword) {
     );
 };
 
-const JWT_SECRET = process.env.JWT_SECRET || 'dev_secret';
-const JWT_EXPIRES_IN = '2h';
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '2h';
+const JWT_SECRET = (() => {
+    const secret = process.env.JWT_SECRET;
+    if (secret && secret.length >= 32) return secret;
+    if (process.env.NODE_ENV === 'production') {
+        throw new Error('JWT_SECRET debe tener al menos 32 caracteres en producción');
+    }
+    // En desarrollo y pruebas se genera uno aleatorio por arranque (las sesiones no sobreviven reinicios)
+    console.warn('[AUTH] JWT_SECRET ausente o corto: usando un secreto temporal aleatorio');
+    return crypto.randomBytes(32).toString('hex');
+})();
 
 async function hashPassword(plain) {
     return await bcrypt.hash(String(plain), 10);
@@ -126,7 +134,7 @@ async function comparePassword(plain, hash) {
 }
 
 function generateToken(user) {
-    const jti = randomUUID();
+    const jti = crypto.randomUUID();
     const payload = {
         jti,
         id: user.user_id,
@@ -151,7 +159,7 @@ function verifyToken(token) {
     try {
         const raw = sanitizeBearer(token);
         const payload = jwt.verify(raw, JWT_SECRET);
-        return payload; // 👈 MUY IMPORTANTE
+        return payload;
     } catch (e) {
         const err = new Error('Invalid token');
         err.code = 'INVALID_TOKEN';
@@ -160,8 +168,8 @@ function verifyToken(token) {
 }
 
 module.exports = {
+    MIN_PASSWORD_LENGTH,
     sendResetEmail,
-    generateTokenPair,
     startPasswordReset,
     completePasswordReset,
     hashPassword,

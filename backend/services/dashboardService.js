@@ -1,15 +1,6 @@
 // services/dashboardService.js
 const pool = require('../models/db');
 
-function buildScopeWhere({ scope, userId }) {
-  if (scope === 'all') return { sql: '', params: [] };
-  // scope=mine -> tickets donde soy agente o responsable
-  return {
-    sql: 'AND (t.agent_id = $X OR t.responsible_id = $X)',
-    params: [userId]
-  };
-}
-
 function addRange(whereSql, params, from, to) {
   let sql = whereSql;
   if (from) { params.push(from); sql += ` AND t.created_at >= $${params.length}`; }
@@ -18,7 +9,6 @@ function addRange(whereSql, params, from, to) {
 }
 
 async function summary({ scope, userId, from, to }) {
-  // Nota: necesitamos reubicar el índice $ para scope-params dinámicos
   let params = [];
   let where = 'WHERE 1=1';
   // scope
