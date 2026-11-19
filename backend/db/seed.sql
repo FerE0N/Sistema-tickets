@@ -30,11 +30,23 @@ JOIN departments d ON d.name = v.dept
 ON CONFLICT DO NOTHING;
 
 -- 60 tickets repartidos en los últimos 30 días (solo si la tabla está vacía)
+WITH catalogo(n, subject, description, category) AS (VALUES
+    (0, 'La computadora no enciende',          'El equipo no da señal al presionar el botón de encendido.', 'Hardware'),
+    (1, 'No puedo acceder al correo',          'Outlook pide la contraseña una y otra vez.',                'Accesos y cuentas'),
+    (2, 'Instalar paquetería de oficina',      'Equipo nuevo sin Office instalado.',                        'Software'),
+    (3, 'Internet lento en el área',           'Las páginas tardan más de un minuto en cargar.',            'Red e Internet'),
+    (4, 'Restablecer contraseña del ERP',      'La cuenta se bloqueó tras varios intentos.',                'Accesos y cuentas'),
+    (5, 'La impresora no imprime',             'Los documentos se quedan en la cola de impresión.',         'Impresoras'),
+    (6, 'Solicitud de monitor adicional',      'Se requiere un segundo monitor para el puesto.',            'Hardware'),
+    (7, 'Error al abrir el sistema de nómina', 'Aparece un error de conexión al iniciar.',                  'Software'),
+    (8, 'Configurar VPN',                      'Acceso remoto para trabajo desde casa.',                    'Red e Internet'),
+    (9, 'Alta de usuario nuevo',               'Crear cuenta y correo para un nuevo colaborador.',          'Accesos y cuentas')
+)
 INSERT INTO tickets (subject, description, category_id, responsible_id, agent_id, status, created_at)
 SELECT
-    s.subject,
-    'Ticket de demostración generado por seed.sql.',
-    (SELECT category_id FROM categories ORDER BY category_id OFFSET (g % 6) LIMIT 1),
+    c.subject,
+    c.description,
+    (SELECT category_id FROM categories WHERE name = c.category),
     (SELECT user_id FROM users WHERE email IN ('carlos@demo.com', 'maria@demo.com', 'jorge@demo.com')
         ORDER BY user_id OFFSET (g % 3) LIMIT 1),
     (SELECT user_id FROM users WHERE email IN ('agente@demo.com', 'sofia@demo.com', 'admin@demo.com')
@@ -42,14 +54,7 @@ SELECT
     (ARRAY['abierto', 'en progreso', 'cerrado', 'cerrado'])[1 + (g % 4)],
     NOW() - ((g % 30) || ' days')::interval - ((g * 37 % 600) || ' minutes')::interval
 FROM generate_series(1, 60) AS g
-CROSS JOIN LATERAL (
-    SELECT (ARRAY[
-        'La computadora no enciende', 'No puedo acceder al correo', 'Instalar paquetería de oficina',
-        'Internet lento en el área', 'Restablecer contraseña del ERP', 'La impresora no imprime',
-        'Solicitud de monitor adicional', 'Error al abrir el sistema de nómina', 'Configurar VPN',
-        'Alta de usuario nuevo'
-    ])[1 + (g % 10)] AS subject
-) s
+JOIN catalogo c ON c.n = (g * 7) % 10
 WHERE NOT EXISTS (SELECT 1 FROM tickets);
 
 COMMIT;
