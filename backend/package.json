@@ -11,7 +11,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "MIT",
+  "license": "ISC",
   "description": "API REST del Sistema de Tickets (Express 5 + PostgreSQL)",
   "dependencies": {
     "bcrypt": "^6.0.0",
