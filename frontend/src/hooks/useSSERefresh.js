@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { API } from '@/lib/config';
 
-const API = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:4000';
 
 /**
  * Suscribe a Server-Sent Events (SSE) del backend y dispara callbacks

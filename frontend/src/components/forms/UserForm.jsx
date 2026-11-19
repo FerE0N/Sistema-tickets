@@ -13,7 +13,7 @@ import Form, {
     Input,
     Select,
     FormActions,
-} from './UseForm';
+} from './FormKit';
 
 export default function UserForm({ token, initial, onCancel, onSaved }) {
     const editing = Boolean(initial?.user_id);

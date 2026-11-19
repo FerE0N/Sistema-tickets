@@ -14,8 +14,8 @@ import { Line, Doughnut, Bar, Pie } from 'react-chartjs-2';
 import Card from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { useSSERefresh } from '@/hooks/useSSERefresh';
+import { API } from '@/lib/config';
 
-const API = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:4000';
 
 ChartJS.register(
     LineElement, PointElement, BarElement, ArcElement,

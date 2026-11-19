@@ -1,12 +1,8 @@
-// src/admin/tokens/page.jsx
+// src/app/(app)/admin/tokens/page.jsx
 'use client';
 import { useEffect, useState } from 'react';
 import { apiFetch } from '@/lib/api';
 import BackBar from '@/components/BackBar';
-
-import { useSSERefresh } from '@/hooks/useSSERefresh';
-
-useSSERefresh({ onTicketChange: () => setFilters(f => ({ ...f })) }); // fuerza refetch
 
 export default function TokensPage() {
     const [data, setData] = useState({ items: [], page: 1, totalPages: 1, total: 0, pageSize: 10 });

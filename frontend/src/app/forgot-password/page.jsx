@@ -3,8 +3,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { API } from '@/lib/config';
 
-const API = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:4000';
 
 export default function ForgotPasswordPage() {
     const [email, setEmail] = useState('');
