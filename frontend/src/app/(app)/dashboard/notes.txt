@@ -1,5 +1,0 @@
-que hacer?
-
-ajustar colores de las graficas para que sean distintivos
-hacer el estilo de las paginas
-hacer que la pagina se actualice cada vz que se haga un update o cambio

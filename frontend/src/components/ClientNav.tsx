@@ -4,6 +4,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { API } from '@/lib/config';
 
 type User = {
     name: string;
@@ -22,7 +23,7 @@ export default function ClientNav() {
 
         (async () => {
             try {
-                const res = await fetch('http://localhost:4000/api/auth/me', {
+                const res = await fetch(`${API}/api/auth/me`, {
                     headers: { Authorization: `Bearer ${token}` },
                     cache: 'no-store',
                 });

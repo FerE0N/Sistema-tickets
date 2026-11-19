@@ -3,9 +3,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AutocompleteSelect from '@/components/AutocompleteSelect';
+import { API } from '@/lib/config';
 
 
-const API = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:4000';
 
 export default function NewTicketPage() {
     const router = useRouter();

@@ -1,6 +1,7 @@
 // src/hooks/useAuth.js
 'use client';
 import { useEffect, useState } from 'react';
+import { API } from '@/lib/config';
 
 export function useAuth(requireAdmin = false) {
     const [loading, setLoading] = useState(true);
@@ -25,7 +26,7 @@ export function useAuth(requireAdmin = false) {
         // Validación con /auth/me para asegurar token vivo
         (async () => {
             try {
-                const res = await fetch('http://localhost:4000/api/auth/me', {
+                const res = await fetch(`${API}/api/auth/me`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 if (!res.ok) throw new Error('INVALID');

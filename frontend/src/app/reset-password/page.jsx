@@ -1,15 +1,22 @@
 // src/app/reset-password/page.jsx
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useSearchParams, useRouter } from 'next/navigation';
-
-const API = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:4000';
+import { useSearchParams } from 'next/navigation';
+import { API } from '@/lib/config';
 
 export default function ResetPasswordPage() {
+    // useSearchParams necesita un límite de Suspense para el prerender de Next.js
+    return (
+        <Suspense fallback={null}>
+            <ResetPasswordForm />
+        </Suspense>
+    );
+}
+
+function ResetPasswordForm() {
     const sp = useSearchParams();
-    const router = useRouter();
     const token = sp.get('token') || '';
 
     const [password, setPassword] = useState('');
@@ -28,7 +35,7 @@ export default function ResetPasswordPage() {
         if (!token) return setErr('Falta el token de recuperación.');
         if (!password.trim() || !confirm.trim()) return setErr('Completa ambos campos.');
         if (password !== confirm) return setErr('Las contraseñas no coinciden.');
-        if (password.length < 6) return setErr('La nueva contraseña debe tener al menos 6 caracteres.');
+        if (password.length < 8) return setErr('La nueva contraseña debe tener al menos 8 caracteres.');
 
         try {
             setLoading(true);
@@ -40,8 +47,6 @@ export default function ResetPasswordPage() {
             const data = await res.json();
             if (!res.ok) throw new Error(data?.message || 'No se pudo cambiar la contraseña');
             setOk(true);
-            // Opcional: redirigir tras 2–3s
-            // setTimeout(() => router.replace('/login'), 2000);
         } catch (e) {
             setErr(e.message);
         } finally {

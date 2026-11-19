@@ -22,11 +22,11 @@
         "name": "next"
       }
     ],
-    "baseUrl": ".", // <-- añade esto
+    "baseUrl": ".",
     "paths": {
       "@/*": [
         "./src/*"
-      ] // <-- alias a src
+      ]
     }
   },
   "include": [

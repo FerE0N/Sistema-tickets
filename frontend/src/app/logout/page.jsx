@@ -2,6 +2,7 @@
 'use client';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { API } from '@/lib/config';
 
 export default function LogoutPage() {
     const router = useRouter();
@@ -12,7 +13,7 @@ export default function LogoutPage() {
                 const token = localStorage.getItem('token');
                 if (token) {
                     // Si tienes endpoint de logout en backend:
-                    await fetch('http://localhost:4000/api/auth/logout', {
+                    await fetch(`${API}/api/auth/logout`, {
                         method: 'POST',
                         headers: { Authorization: `Bearer ${token}` }
                     }).catch(() => { });
