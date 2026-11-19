@@ -4,6 +4,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { API } from '@/lib/config';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -32,7 +33,7 @@ export default function LoginPage() {
 
         try {
             setLoading(true);
-            const res = await fetch('http://localhost:4000/api/auth/login', {
+            const res = await fetch(`${API}/api/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
@@ -88,9 +89,9 @@ export default function LoginPage() {
                             </p>
 
                             <ul style={{ color: 'rgba(255,255,255,.85)', fontSize: '0.98rem' }} className="stack">
-                                <li>• Seguimiento en tiempo real</li>
-                                <li>• Dashboard con métricas y tendencias</li>
-                                <li>• Roles y permisos por equipo</li>
+                                <li>Seguimiento en tiempo real</li>
+                                <li>Dashboard con métricas y tendencias</li>
+                                <li>Roles y permisos por equipo</li>
                             </ul>
                         </section>
 

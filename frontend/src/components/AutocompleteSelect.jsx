@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
+import { API } from '@/lib/config';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:4000';
 
 export default function AutocompleteSelect({
     label,
@@ -42,7 +42,7 @@ export default function AutocompleteSelect({
                 const ctrl = new AbortController();
                 abortRef.current = ctrl;
 
-                const url = new URL(`/api${fetchUrl}`, API_BASE);
+                const url = new URL(`/api${fetchUrl}`, API);
                 url.searchParams.set(queryParam, q);
                 url.searchParams.set('limit', '10');
 

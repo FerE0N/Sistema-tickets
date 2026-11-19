@@ -4,6 +4,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import Modal from '@/components/Modal';
 import BackBar from '@/components/BackBar';
+import { API } from '@/lib/config';
 
 export default function CategoriasAdminPage() {
     const router = useRouter();
@@ -25,7 +26,7 @@ export default function CategoriasAdminPage() {
     async function fetchList() {
         setLoading(true);
         try {
-            const res = await fetch('http://localhost:4000/api/categorias', {
+            const res = await fetch(`${API}/api/categorias`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const json = await res.json();
@@ -45,8 +46,8 @@ export default function CategoriasAdminPage() {
         if (!name.trim()) { alert('Nombre requerido'); return; }
         try {
             const url = editing
-                ? `http://localhost:4000/api/categorias/${editing.category_id}`
-                : 'http://localhost:4000/api/categorias';
+                ? `${API}/api/categorias/${editing.category_id}`
+                : `${API}/api/categorias`;
             const method = editing ? 'PUT' : 'POST';
             const res = await fetch(url, {
                 method,
@@ -65,7 +66,7 @@ export default function CategoriasAdminPage() {
     async function remove(category_id) {
         if (!confirm('¿Eliminar categoría?')) return;
         try {
-            const res = await fetch(`http://localhost:4000/api/categorias/${category_id}`, {
+            const res = await fetch(`${API}/api/categorias/${category_id}`, {
                 method: 'DELETE',
                 headers: { Authorization: `Bearer ${token}` }
             });

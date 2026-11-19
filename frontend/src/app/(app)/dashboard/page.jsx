@@ -14,8 +14,8 @@ import { Line, Doughnut, Bar, Pie } from 'react-chartjs-2';
 import Card from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { useSSERefresh } from '@/hooks/useSSERefresh';
+import { API } from '@/lib/config';
 
-const API = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:4000';
 
 ChartJS.register(
     LineElement, PointElement, BarElement, ArcElement,
@@ -233,7 +233,8 @@ export default function DashboardPage() {
     const lineData = {
         datasets: [{
             label: 'Tickets por día',
-            data: byDay.map(r => ({ x: r.date, y: r.count })),
+            // parsing: false exige valores ya convertidos: timestamp en ms para el eje de tiempo
+            data: byDay.map(r => ({ x: new Date(`${r.day ?? r.date}T00:00:00`).getTime(), y: r.count })),
             borderColor: COL.brand,                 // teal sobrio
             backgroundColor: alpha(COL.brand, .22), // relleno suave
             borderWidth: 2,
@@ -252,11 +253,13 @@ export default function DashboardPage() {
     };
 
     // Doughnut
+    // Color fijo por estado (antes dependía del orden en que llegaban los datos)
+    const STATUS_COLORS = { 'abierto': COL.warn, 'en progreso': '#3b82f6', 'cerrado': COL.ok };
     const doughnutData = {
         labels: byStatus.map(r => r.status),
         datasets: [{
             data: byStatus.map(r => r.count),
-            backgroundColor: [COL.warn, COL.accent, COL.ok],
+            backgroundColor: byStatus.map(r => STATUS_COLORS[r.status] || COL.accent),
             borderColor: COL.surface,
             borderWidth: 2
         }]
@@ -334,17 +337,17 @@ export default function DashboardPage() {
                     <div className="label">Total</div>
                     <div className="value">{summary?.total ?? '—'}</div>
                 </div>
-                <div className="kpi glass-panel">
+                <div className="kpi glass-panel" style={{ borderLeft: `4px solid ${STATUS_COLORS['abierto']}` }}>
                     <div className="label">Abiertos</div>
-                    <div className="value" style={{ color: COL.warn }}>{summary?.open ?? '—'}</div>
+                    <div className="value">{summary?.open ?? '—'}</div>
                 </div>
-                <div className="kpi glass-panel">
+                <div className="kpi glass-panel" style={{ borderLeft: `4px solid ${STATUS_COLORS['en progreso']}` }}>
                     <div className="label">En progreso</div>
-                    <div className="value" style={{ color: COL.accent }}>{summary?.in_progress ?? '—'}</div>
+                    <div className="value">{summary?.in_progress ?? '—'}</div>
                 </div>
-                <div className="kpi glass-panel">
+                <div className="kpi glass-panel" style={{ borderLeft: `4px solid ${STATUS_COLORS['cerrado']}` }}>
                     <div className="label">Cerrados</div>
-                    <div className="value" style={{ color: COL.ok }}>{summary?.closed ?? '—'}</div>
+                    <div className="value">{summary?.closed ?? '—'}</div>
                 </div>
             </section>
 

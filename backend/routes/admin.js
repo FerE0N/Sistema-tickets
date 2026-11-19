@@ -1,4 +1,4 @@
-// backend/routes/adin.js
+// routes/admin.js
 const express = require('express');
 const router = express.Router();
 const adminCtrl = require('../controllers/adminController.js');

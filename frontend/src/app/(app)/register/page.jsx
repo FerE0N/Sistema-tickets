@@ -6,8 +6,9 @@ import { useRouter } from 'next/navigation';
 import BackBar from '@/components/BackBar';
 import DepartamentoSelector from '@/components/DepartamentoSelector';
 import RoleSelector from '@/components/RoleSelector';
+import { API } from '@/lib/config';
 
-// Si ya usas el kit de formularios (UseForm.jsx) puedes importarlo;
+// Si ya usas el kit de formularios (FormKit.jsx) puedes importarlo;
 // si no, este componente usa directamente las clases de CSS que ya definiste.
 
 export default function RegisterPage() {
@@ -71,7 +72,7 @@ export default function RegisterPage() {
 
         setSaving(true);
         try {
-            const res = await fetch('http://localhost:4000/api/auth/register', {
+            const res = await fetch(`${API}/api/auth/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(form)

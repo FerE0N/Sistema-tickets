@@ -1,4 +1,4 @@
-// backend/controllers/departamentoController.js
+// controllers/departamentoController.js
 const deptService = require('../services/departamentoService.js');
 const pool = require("../models/db.js");
 
