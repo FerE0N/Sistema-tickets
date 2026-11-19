@@ -1,5 +1,5 @@
-// backend/controllers/categoriasController.js
-const pool = require('../models/db'); // o usa un service si ya lo tienes
+// controllers/categoriaController.js
+const pool = require('../models/db');
 
 const svc = require('../services/categoriaService');
 
@@ -22,7 +22,10 @@ async function create(req, res) {
         if (!name?.trim()) return res.status(400).json({ message: 'name es requerido' });
         const row = await svc.create({ name });
         res.status(201).json(row);
-    } catch { res.status(500).json({ message: 'Error al crear categoría' }); }
+    } catch (e) {
+        if (e.code === '23505') return res.status(409).json({ message: 'La categoría ya existe' });
+        res.status(500).json({ message: 'Error al crear categoría' });
+    }
 }
 
 async function update(req, res) {
@@ -62,5 +65,4 @@ async function search(req, res) {
     }
 }
 
-// 👇 Exporta también search
 module.exports = { list, get, create, update, remove, search };

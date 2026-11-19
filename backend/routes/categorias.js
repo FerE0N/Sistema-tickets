@@ -1,10 +1,10 @@
-// backend/routes/categorias.js
+// routes/categorias.js
 const express = require('express');
 const router = express.Router();
 const c = require('../controllers/categoriaController.js');
 const { authenticate, requireRoles, ROLES } = require('../middleware/authMiddleware.js');
 
-router.get('/search', authenticate, c.search);  // ← primero
+router.get('/search', authenticate, c.search); // antes de '/:id'
 router.get('/', authenticate, c.list);
 router.get('/:id', authenticate, c.get);
 

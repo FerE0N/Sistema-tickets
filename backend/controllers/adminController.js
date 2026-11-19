@@ -1,4 +1,4 @@
-//backend/controllers/adminControllers
+// controllers/adminController.js
 const revokedSvc = require('../services/revokedTokenService.js');
 
 exports.listRevokedTokens = async (req, res) => {

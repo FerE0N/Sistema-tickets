@@ -20,9 +20,11 @@ exports.getById = async (id) => {
   const { rows } = await pool.query(`
     SELECT 
       u.user_id, u.name, u.last_name, u.email,
-      u.role_id, u.department_id,
+      u.role_id, r.name AS role_name, u.department_id, d.name AS department_name,
       u.created_at, u.updated_at
     FROM users u
+    LEFT JOIN roles r ON r.role_id = u.role_id
+    LEFT JOIN departments d ON d.department_id = u.department_id
     WHERE u.user_id = $1
   `, [id]);
   return rows[0];
@@ -93,7 +95,7 @@ exports.listPaged = async ({
   const allowedDir = new Set(['ASC', 'DESC']);
 
   const orderBy = allowedSort.has(sort) ? sort : 'u.user_id';
-  const orderDir = allowedDir.has((dir || '').toUpperCase()) ? dir.toUpperCase() : 'ASC';
+  const orderDir = allowedDir.has(String(dir || '').toUpperCase()) ? String(dir).toUpperCase() : 'ASC';
 
   const limit = Math.max(1, Math.min(100, Number(pageSize)));
   const offset = (Math.max(1, Number(page)) - 1) * limit;
@@ -141,9 +143,7 @@ exports.listPaged = async ({
   };
 };
 
-//
-// NUEVO: búsqueda para autocomplete (con JOINs y filtro opcional por department_id)
-//
+// Búsqueda para autocompletar (filtro opcional por department_id)
 exports.search = async ({ q = '', limit = 10, department_id }) => {
   const lim = Math.max(1, Math.min(50, Number(limit)));
   const params = [];
