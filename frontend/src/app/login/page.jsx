@@ -89,9 +89,9 @@ export default function LoginPage() {
                             </p>
 
                             <ul style={{ color: 'rgba(255,255,255,.85)', fontSize: '0.98rem' }} className="stack">
-                                <li>• Seguimiento en tiempo real</li>
-                                <li>• Dashboard con métricas y tendencias</li>
-                                <li>• Roles y permisos por equipo</li>
+                                <li>Seguimiento en tiempo real</li>
+                                <li>Dashboard con métricas y tendencias</li>
+                                <li>Roles y permisos por equipo</li>
                             </ul>
                         </section>
 

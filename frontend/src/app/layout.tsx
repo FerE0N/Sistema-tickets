@@ -4,6 +4,8 @@ import '@/app/styles/appshell.css';
 import '@/app/styles/tables.css';
 import '@/app/styles/forms.css';
 import '@/app/styles/backbar.css';
+import '@/app/styles/dashboard.css';
+import '@/app/styles/admin.css';
 
 export const metadata = { title: 'Tickets', description: 'Sistema de tickets' };
 

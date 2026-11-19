@@ -164,3 +164,13 @@
 .btn-create:hover {
     background: linear-gradient(90deg, #16a34a, #15803d);
 }
+/* Chips de estado legibles sobre el fondo vítreo */
+.table-admin .chip {
+    border: 0;
+    color: #fff;
+    font-weight: 600;
+}
+.table-admin .chip.warn { background: rgba(245, 158, 11, .9); }
+.table-admin .chip.info { background: rgba(59, 130, 246, .9); }
+.table-admin .chip.ok { background: rgba(34, 197, 94, .9); }
+.table-admin .chip.muted { background: rgba(255, 255, 255, .25); }

@@ -2,6 +2,9 @@
 'use client';
 import { useEffect, useMemo } from 'react';
 
+// Mismos colores que el dashboard: abierto ámbar, en progreso azul, cerrado verde
+const STATUS_CHIP = { 'abierto': 'warn', 'en progreso': 'info', 'cerrado': 'ok' };
+
 export default function TicketsTable({
     data,
     admin = false,
@@ -67,12 +70,7 @@ export default function TicketsTable({
                             </td>
                             <td>
                                 <span
-                                    className={`chip ${(t.status || '').toLowerCase() === 'cerrado'
-                                            ? 'ok'
-                                            : (t.status || '').toLowerCase().startsWith('en')
-                                                ? 'warn'
-                                                : 'muted'
-                                        }`}
+                                    className={`chip ${STATUS_CHIP[(t.status || '').toLowerCase()] || 'muted'}`}
                                 >
                                     {t.status || '—'}
                                 </span>

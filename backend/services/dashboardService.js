@@ -90,7 +90,7 @@ async function byDay({ scope, userId, days, from, to }) {
 
   const sql = `
     SELECT
-      date_trunc('day', t.created_at)::date AS day,
+      to_char(date_trunc('day', t.created_at), 'YYYY-MM-DD') AS day,
       COUNT(*)::int AS count
     FROM tickets t
     ${where}
